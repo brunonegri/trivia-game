@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import { Switch, Route } from 'react-router-dom';
 import Login from './pages/Login';
+import Games from './pages/Games';
 import Settings from './pages/Settings';
 
 export default function App() {
@@ -19,6 +20,7 @@ export default function App() {
           path="/settings"
           component={ (props) => <Settings { ...props } /> }
         />
+        <Route path="/game" component={ Games } />
       </Switch>
     </div>
   );

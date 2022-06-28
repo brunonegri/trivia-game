@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 class Login extends React.Component {
@@ -10,6 +11,16 @@ class Login extends React.Component {
     handleChange = ({ target }) => {
       const { name, value } = target;
       this.setState({ [name]: value });
+    }
+
+    handleClick = () => {
+      fetch('https://opentdb.com/api_token.php?command=request')
+        .then((response) => response.json())
+        .then(({ token }) => {
+          const { history } = this.props;
+          localStorage.setItem('token', token);
+          history.push('/games');
+        });
     }
 
     render() {
@@ -44,6 +55,7 @@ class Login extends React.Component {
             type="submit"
             data-testid="btn-play"
             disabled={ !validate }
+            onClick={ this.handleClick }
           >
             Play
           </button>
@@ -60,5 +72,11 @@ class Login extends React.Component {
       );
     }
 }
+
+Login.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+};
 
 export default Login;
