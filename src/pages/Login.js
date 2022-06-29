@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import userLogin from '../redux/actions';
+import { userLogin, getToken } from '../redux/actions';
 
 class Login extends React.Component {
     state = {
@@ -16,12 +16,13 @@ class Login extends React.Component {
     }
 
     handleClick = () => {
-      const { dispatchLogin } = this.props;
-      fetch('https://opentdb.com/api_token.php?command=request')
-        .then((response) => response.json())
-        .then(({ token }) => {
-          localStorage.setItem('token', token);
-        });
+      const { dispatchLogin, dispatchToken } = this.props;
+      // fetch('https://opentdb.com/api_token.php?command=request')
+      //   .then((response) => response.json())
+      //   .then(({ token }) => {
+      //     localStorage.setItem('token', token);
+      //   });
+      dispatchToken();
       dispatchLogin(this.state);
       const { history } = this.props;
       history.push('/game');
@@ -84,12 +85,14 @@ class Login extends React.Component {
 
 Login.propTypes = {
   dispatchLogin: PropTypes.func.isRequired,
+  dispatchToken: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
+  dispatchToken: () => dispatch(getToken()),
   dispatchLogin: (dados) => dispatch(userLogin(dados)),
 });
 
