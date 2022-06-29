@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import userLogin from '../redux/actions';
 
 class Login extends React.Component {
     state = {
@@ -14,13 +16,15 @@ class Login extends React.Component {
     }
 
     handleClick = () => {
+      const { dispatchLogin } = this.props;
       fetch('https://opentdb.com/api_token.php?command=request')
         .then((response) => response.json())
         .then(({ token }) => {
-          const { history } = this.props;
           localStorage.setItem('token', token);
-          history.push('/games');
         });
+      dispatchLogin(this.state);
+      const { history } = this.props;
+      history.push('/game');
     }
 
     render() {
@@ -33,23 +37,28 @@ class Login extends React.Component {
 
       return (
         <div>
-          <input
-            type="text"
-            name="name"
-            data-testid="input-player-name"
-            value={ name }
-            onChange={ this.handleChange }
-          />
+          <label htmlFor="name">
+            Nome:
+            <input
+              type="text"
+              name="name"
+              data-testid="input-player-name"
+              value={ name }
+              onChange={ this.handleChange }
+            />
+          </label>
 
           <br />
-
-          <input
-            type="email"
-            name="email"
-            data-testid="input-gravatar-email"
-            value={ email }
-            onChange={ this.handleChange }
-          />
+          <label htmlFor="email">
+            Email:
+            <input
+              type="email"
+              name="email"
+              data-testid="input-gravatar-email"
+              value={ email }
+              onChange={ this.handleChange }
+            />
+          </label>
 
           <button
             type="submit"
@@ -74,9 +83,14 @@ class Login extends React.Component {
 }
 
 Login.propTypes = {
+  dispatchLogin: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
 };
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  dispatchLogin: (dados) => dispatch(userLogin(dados)),
+});
+
+export default connect(null, mapDispatchToProps)(Login);
