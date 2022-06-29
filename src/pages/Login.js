@@ -7,7 +7,9 @@ import { userLogin, getToken } from '../redux/actions';
 class Login extends React.Component {
     state = {
       name: '',
-      email: '',
+      asserions: 0,
+      score: 0,
+      gravatarEmail: '',
     };
 
     handleChange = ({ target }) => {
@@ -15,14 +17,14 @@ class Login extends React.Component {
       this.setState({ [name]: value });
     }
 
-    handleClick = () => {
+    handleClick = async () => {
       const { dispatchLogin, dispatchToken } = this.props;
       // fetch('https://opentdb.com/api_token.php?command=request')
       //   .then((response) => response.json())
       //   .then(({ token }) => {
       //     localStorage.setItem('token', token);
       //   });
-      dispatchToken();
+      await dispatchToken();
       dispatchLogin(this.state);
       const { history } = this.props;
       history.push('/game');
@@ -31,10 +33,10 @@ class Login extends React.Component {
     render() {
       const {
         name,
-        email,
+        gravatarEmail,
       } = this.state;
 
-      const validate = (name.length >= 1 && email.length >= 1);
+      const validate = (name.length >= 1 && gravatarEmail.length >= 1);
 
       return (
         <div>
@@ -54,9 +56,9 @@ class Login extends React.Component {
             Email:
             <input
               type="email"
-              name="email"
+              name="gravatarEmail"
               data-testid="input-gravatar-email"
-              value={ email }
+              value={ gravatarEmail }
               onChange={ this.handleChange }
             />
           </label>
@@ -92,7 +94,7 @@ Login.propTypes = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  dispatchToken: () => dispatch(getToken()),
+  dispatchToken: async () => dispatch(getToken()),
   dispatchLogin: (dados) => dispatch(userLogin(dados)),
 });
 

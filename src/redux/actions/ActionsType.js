@@ -1,4 +1,5 @@
 const LOGIN = 'LOGIN';
 const SEND_TOKEN = 'SEND_TOKEN';
+const SEND_QUESTION = 'SEND_QUESTION';
 
-export { LOGIN, SEND_TOKEN };
+export { LOGIN, SEND_TOKEN, SEND_QUESTION };

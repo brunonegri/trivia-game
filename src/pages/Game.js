@@ -1,10 +1,44 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Header from '../components/Header';
+import GameBoard from '../components/GameBoard';
+// import { questionApi } from '../services/Api';
 
 class Game extends React.Component {
+  componentDidMount() {
+    this.validateToken();
+  }
+
+  validateToken = () => {
+    const { token, history } = this.props;
+    const localToken = localStorage.getItem('token');
+    if (token !== localToken) {
+      localStorage.removeItem('token');
+      history.push('/');
+    }
+  }
+
+  // baf2de5f79abdb43213df896a301a13d12d4bca9262bf72b425d0d572d95960d
+
   render() {
-    return <div><Header /></div>;
+    return (
+      <div>
+        <Header />
+        <GameBoard />
+      </div>);
   }
 }
 
-export default Game;
+const mapStateToProps = (state) => ({
+  token: state.loginReducer.token,
+});
+
+Game.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+  token: PropTypes.string.isRequired,
+};
+
+export default connect(mapStateToProps)(Game);

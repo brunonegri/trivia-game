@@ -5,4 +5,11 @@ const tokenApi = async () => {
   return token;
 };
 
-export default tokenApi;
+const questionApi = async (param) => {
+  const resolve = await fetch(`https://opentdb.com/api.php?amount=5&token=${param}`);
+  const data = await resolve.json();
+  // console.log(data);
+  return data;
+};
+
+export { tokenApi, questionApi };

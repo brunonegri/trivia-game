@@ -1,4 +1,4 @@
-import tokenApi from '../../services/Api';
+import { tokenApi } from '../../services/Api';
 import { LOGIN, SEND_TOKEN } from './ActionsType';
 
 const userLogin = (value) => ({
@@ -11,11 +11,23 @@ const sendToken = (token) => ({
   payload: token,
 });
 
+// const sendQuestion = (questions) => ({
+//   type: SEND_QUESTION,
+//   payload: questions,
+// });
+
 const getToken = () => async (dispatch) => {
   const token = await tokenApi();
-  console.log(token);
+  // console.log(token);
   localStorage.setItem('token', token);
   dispatch(sendToken(token));
 };
+
+// const getQuestion = () => async (dispatch) => {
+//   const localToken = localStorage.getItem('token');
+//   const questions = await questionApi(localToken);
+//   console.log(questions);
+//   dispatch(sendQuestion(questions));
+// };
 
 export { userLogin, getToken };
