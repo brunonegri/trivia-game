@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 
 class Answers extends React.Component {
   render() {
-    const { dataTestId, handleClick, resposta } = this.props;
+    const { dataTestId, handleClickAswers, resposta } = this.props;
     return (
       <button
-        onClick={ handleClick }
+        onClick={ handleClickAswers }
         data-testid={ dataTestId }
         type="button"
       >
@@ -19,7 +19,7 @@ class Answers extends React.Component {
 
 Answers.propTypes = {
   dataTestId: PropTypes.string.isRequired,
-  handleClick: PropTypes.func.isRequired,
+  handleClickAswers: PropTypes.func.isRequired,
   resposta: PropTypes.string.isRequired,
 };
 

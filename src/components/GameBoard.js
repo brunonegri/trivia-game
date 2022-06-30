@@ -2,12 +2,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { questionApi } from '../services/Api';
 import Answers from './Answers';
+import Next from './Next';
 // import PropTypes from 'prop-types';
 
 class GameBoard extends React.Component {
     state = {
       questions: [],
       index: 0,
+      isDisabled: true,
     }
 
     async componentDidMount() {
@@ -20,12 +22,17 @@ class GameBoard extends React.Component {
       this.getAnswers();
     }
 
+    handleClickAnswers = () => {
+      this.setState({ isDisabled: false });
+    }
+
     handleClick = () => {
       const { index } = this.state;
       const acc = index;
       this.setState((prev) => ({
         ...prev, index: acc + 1,
       }));
+      this.setState({ isDisabled: true });
     }
 
     renderQuestions = () => {
@@ -47,7 +54,7 @@ class GameBoard extends React.Component {
       const { questions, index } = this.state;
       const respostas = [];
       const correctAnswer = (<Answers
-        handleClick={ this.handleClick }
+        handleClickAswers={ this.handleClickAnswers }
         dataTestId="correct-answer"
         resposta={ questions[index].correct_answer }
       />);
@@ -55,7 +62,7 @@ class GameBoard extends React.Component {
       questions[index]
         .incorrect_answers.forEach((elemento, i) => respostas
           .push(<Answers
-            handleClick={ this.handleClick }
+            handleClickAswers={ this.handleClickAnswers }
             dataTestId={ `wrong-answer-${i}` }
             resposta={ elemento }
           />));
@@ -66,13 +73,15 @@ class GameBoard extends React.Component {
     }
 
     render() {
-      const { index, questions } = this.state;
+      const { index, questions, isDisabled } = this.state;
       const validate = questions.length > 1;
       return (
         <div>
           <div>
             {/* to aqui */}
             {validate && this.renderQuestions()[index]}
+            { !isDisabled
+            && <Next handleClick={ this.handleClick } isDisabled={ isDisabled } /> }
           </div>
         </div>);
     }
