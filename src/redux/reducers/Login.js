@@ -1,10 +1,12 @@
-import { LOGIN, SEND_TOKEN } from '../actions/ActionsType';
+import { LOGIN, SEND_TOKEN, SEND_QUESTION } from '../actions/ActionsType';
 
 const initialState = {
   token: '',
   player: {
     name: '',
-    email: '',
+    assertions: 0,
+    score: 0,
+    gravatarEmail: '',
   },
 };
 
@@ -14,10 +16,14 @@ const loginReducer = (state = initialState, action) => {
     return { ...state,
       player: {
         name: action.payload.name,
-        email: action.payload.email,
+        assertions: 0,
+        score: 0,
+        gravatarEmail: action.payload.gravatarEmail,
       } };
   case SEND_TOKEN:
     return { ...state, token: action.payload };
+  case SEND_QUESTION:
+    return { ...state };
   default:
     return state;
   }
