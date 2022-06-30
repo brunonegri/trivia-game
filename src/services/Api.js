@@ -1,8 +1,9 @@
 const tokenApi = async () => {
   const resolve = await fetch('https://opentdb.com/api_token.php?command=request');
   const data = await resolve.json();
-  const { token } = data;
-  return token;
+  // console.log(data);
+  // const { token } = data;
+  return data;
 };
 
 const questionApi = async (param) => {

@@ -19,11 +19,6 @@ class Login extends React.Component {
 
     handleClick = async () => {
       const { dispatchLogin, dispatchToken } = this.props;
-      // fetch('https://opentdb.com/api_token.php?command=request')
-      //   .then((response) => response.json())
-      //   .then(({ token }) => {
-      //     localStorage.setItem('token', token);
-      //   });
       await dispatchToken();
       dispatchLogin(this.state);
       const { history } = this.props;

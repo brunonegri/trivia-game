@@ -11,23 +11,11 @@ const sendToken = (token) => ({
   payload: token,
 });
 
-// const sendQuestion = (questions) => ({
-//   type: SEND_QUESTION,
-//   payload: questions,
-// });
-
 const getToken = () => async (dispatch) => {
-  const token = await tokenApi();
-  // console.log(token);
-  localStorage.setItem('token', token);
-  dispatch(sendToken(token));
+  const tokenResponse = await tokenApi();
+  // console.log(tokenResponse.token);
+  localStorage.setItem('token', tokenResponse.token);
+  dispatch(sendToken(tokenResponse.token));
 };
-
-// const getQuestion = () => async (dispatch) => {
-//   const localToken = localStorage.getItem('token');
-//   const questions = await questionApi(localToken);
-//   console.log(questions);
-//   dispatch(sendQuestion(questions));
-// };
 
 export { userLogin, getToken };
