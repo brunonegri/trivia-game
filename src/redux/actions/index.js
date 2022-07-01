@@ -1,5 +1,5 @@
 import { tokenApi } from '../../services/Api';
-import { LOGIN, SEND_TOKEN } from './ActionsType';
+import { LOGIN, SEND_TOKEN, SET_SCORE } from './ActionsType';
 
 const userLogin = (value) => ({
   type: LOGIN,
@@ -11,6 +11,11 @@ const sendToken = (token) => ({
   payload: token,
 });
 
+const setScore = (score) => ({
+  type: SET_SCORE,
+  payload: score,
+});
+
 const getToken = () => async (dispatch) => {
   const tokenResponse = await tokenApi();
   // console.log(tokenResponse.token);
@@ -18,4 +23,4 @@ const getToken = () => async (dispatch) => {
   dispatch(sendToken(tokenResponse.token));
 };
 
-export { userLogin, getToken };
+export { userLogin, getToken, setScore };
