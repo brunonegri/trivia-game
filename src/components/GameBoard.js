@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { questionApi } from '../services/Api';
 import Answers from './Answers';
 import Next from './Next';
+import Timer from './Timer';
 // import PropTypes from 'prop-types';
 
 class GameBoard extends React.Component {
@@ -68,8 +69,8 @@ class GameBoard extends React.Component {
           />));
       const mN = 0.5;
       const randon = () => (Math.round(Math.random()) - mN);
-      console.log(respostas.sort(randon));
-      return respostas;
+      // console.log(respostas.sort(randon));
+      return (respostas.sort(randon));
     }
 
     render() {
@@ -78,7 +79,7 @@ class GameBoard extends React.Component {
       return (
         <div>
           <div>
-            {/* to aqui */}
+            <Timer />
             {validate && this.renderQuestions()[index]}
             { !isDisabled
             && <Next handleClick={ this.handleClick } isDisabled={ isDisabled } /> }

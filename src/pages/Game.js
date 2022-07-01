@@ -19,8 +19,6 @@ class Game extends React.Component {
     }
   }
 
-  // baf2de5f79abdb43213df896a301a13d12d4bca9262bf72b425d0d572d95960d
-
   render() {
     return (
       <div>
