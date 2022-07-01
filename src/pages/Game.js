@@ -11,9 +11,11 @@ class Game extends React.Component {
   }
 
   validateToken = () => {
-    const { token, history } = this.props;
+    const { history } = this.props;
+    const localToken = localStorage.getItem('token');
+    console.log(localToken.length);
     const tokenValid = 64;
-    if (token.length < tokenValid) {
+    if (localToken.length < tokenValid) {
       localStorage.removeItem('token');
       history.push('/');
     }
@@ -28,15 +30,10 @@ class Game extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  token: state.loginReducer.token,
-});
-
 Game.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
-  token: PropTypes.string.isRequired,
 };
 
-export default connect(mapStateToProps)(Game);
+export default connect()(Game);

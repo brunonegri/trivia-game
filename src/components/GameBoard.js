@@ -31,9 +31,11 @@ class GameBoard extends React.Component {
     }
 
     handleClickAnswers = (event) => {
-      this.setState(({ isDisabled: false, isAnswered: true },
-      () => this.setDifficulty()));
-      this.setScore(event);
+      this.setState({ isDisabled: false, isAnswered: true });
+      const { isAnswered } = this.state;
+      if (!isAnswered) {
+        this.setScore(event.target);
+      }
     }
 
     handleClick = () => {
@@ -41,7 +43,7 @@ class GameBoard extends React.Component {
       const acc = index;
       this.setState((prev) => ({
         ...prev, index: acc + 1,
-      }));
+      }), () => this.setDifficulty());
       this.setState({ isDisabled: true, isAnswered: false });
       this.setState({ setTimer: 30 });
     }
@@ -66,26 +68,24 @@ class GameBoard extends React.Component {
       const { questions, index } = this.state;
       /* console.log(questions[index].difficulty); */
       if (questions[index].difficulty === 'easy') {
-        this.setState({ difficulty: 1 }, () => {
-        });
+        this.setState({ difficulty: 1 });
       } else if (questions[index].difficulty === 'medium') {
-        this.setState({ difficulty: 2 }, () => {
-        });
+        this.setState({ difficulty: 2 });
       } else if (questions[index].difficulty === 'hard') {
-        this.setState({ difficulty: 3 }, () => {
-        });
+        this.setState({ difficulty: 3 });
       }
       /* console.log(questions); */
     }
 
     setScore = (event) => {
-      const { innerText } = event.target;
+      const { innerText } = event;
       const { dispatchScore } = this.props;
       const { difficulty, setTimer, questions, index } = this.state;
 
       const numberCalculate = 10;
 
       const calculateScore = numberCalculate + (setTimer * difficulty);
+      console.log(difficulty);
 
       const correctAnswer = questions[index].correct_answer;
 
