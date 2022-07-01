@@ -11,6 +11,7 @@ class GameBoard extends React.Component {
       questions: [],
       index: 0,
       isDisabled: true,
+      isAnswered: false,
     }
 
     async componentDidMount() {
@@ -24,7 +25,7 @@ class GameBoard extends React.Component {
     }
 
     handleClickAnswers = () => {
-      this.setState({ isDisabled: false });
+      this.setState({ isDisabled: false, isAnswered: true });
     }
 
     handleClick = () => {
@@ -33,7 +34,7 @@ class GameBoard extends React.Component {
       this.setState((prev) => ({
         ...prev, index: acc + 1,
       }));
-      this.setState({ isDisabled: true });
+      this.setState({ isDisabled: true, isAnswered: false });
     }
 
     renderQuestions = () => {
@@ -52,12 +53,13 @@ class GameBoard extends React.Component {
     }
 
     getAnswers = () => {
-      const { questions, index } = this.state;
+      const { questions, index, isAnswered } = this.state;
       const respostas = [];
       const correctAnswer = (<Answers
         handleClickAswers={ this.handleClickAnswers }
         dataTestId="correct-answer"
         resposta={ questions[index].correct_answer }
+        className={ isAnswered ? 'green-border' : 'not-answered' }
       />);
       respostas.push(correctAnswer);
       questions[index]
@@ -66,6 +68,7 @@ class GameBoard extends React.Component {
             handleClickAswers={ this.handleClickAnswers }
             dataTestId={ `wrong-answer-${i}` }
             resposta={ elemento }
+            className={ isAnswered ? 'red-border' : 'not-answered' }
           />));
       const mN = 0.5;
       const randon = () => (Math.round(Math.random()) - mN);
