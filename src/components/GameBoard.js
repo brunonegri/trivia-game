@@ -4,14 +4,19 @@ import { connect } from 'react-redux';
 import { questionApi } from '../services/Api';
 import Answers from './Answers';
 import { setScore } from '../redux/actions';
+import Next from './Next';
+// import Questions from './Questions';
+// import PropTypes from 'prop-types';
 
 class GameBoard extends React.Component {
     state = {
       questions: [],
       index: 0,
       score: 0,
-      timer: 30,
       difficulty: 0,
+      isDisabled: true,
+      isAnswered: false,
+      setTimer: 30,
     }
 
     async componentDidMount() {
@@ -21,16 +26,24 @@ class GameBoard extends React.Component {
       this.setState({
         questions: fetchQuestions.results,
       }, () => this.setDifficulty());
-      this.getAnswers();
+      const segundo = 1000;
+      setInterval(() => this.timeOut(), segundo);
     }
 
-    handleClick = (event) => {
+    handleClickAnswers = (event) => {
+      this.setState(({ isDisabled: false, isAnswered: true },
+      () => this.setDifficulty()));
+      this.setScore(event);
+    }
+
+    handleClick = () => {
       const { index } = this.state;
       const acc = index;
-      this.setScore(event);
       this.setState((prev) => ({
         ...prev, index: acc + 1,
-      }), () => this.setDifficulty());
+      }));
+      this.setState({ isDisabled: true, isAnswered: false });
+      this.setState({ setTimer: 30 });
     }
 
     renderQuestions = () => {
@@ -68,11 +81,11 @@ class GameBoard extends React.Component {
     setScore = (event) => {
       const { innerText } = event.target;
       const { dispatchScore } = this.props;
-      const { difficulty, timer, questions, index } = this.state;
+      const { difficulty, setTimer, questions, index } = this.state;
 
       const numberCalculate = 10;
 
-      const calculateScore = numberCalculate + (timer * difficulty);
+      const calculateScore = numberCalculate + (setTimer * difficulty);
 
       const correctAnswer = questions[index].correct_answer;
 
@@ -87,35 +100,53 @@ class GameBoard extends React.Component {
     }
 
     getAnswers = () => {
-      const { questions, index } = this.state;
+      const { questions, index, isAnswered } = this.state;
       const respostas = [];
       const correctAnswer = (<Answers
-        handleClick={ this.handleClick }
+        isDisabled={ isAnswered }
+        handleClickAswers={ this.handleClickAnswers }
         dataTestId="correct-answer"
         resposta={ questions[index].correct_answer }
+        className={ isAnswered ? 'green-border' : 'not-answered' }
       />);
       respostas.push(correctAnswer);
       questions[index]
         .incorrect_answers.forEach((elemento, i) => respostas
           .push(<Answers
-            handleClick={ this.handleClick }
+            isDisabled={ isAnswered }
+            handleClickAswers={ this.handleClickAnswers }
             dataTestId={ `wrong-answer-${i}` }
             resposta={ elemento }
+            className={ isAnswered ? 'red-border' : 'not-answered' }
           />));
       const mN = 0.5;
       const randon = () => (Math.round(Math.random()) - mN);
-      respostas.sort(randon);
-      return respostas;
+      return (respostas.sort(randon));
     }
 
+    timeOut= () => {
+      const { setTimer } = this.state;
+      if (setTimer === 0) {
+        this.handleClickAnswers();
+      } else {
+        this.setState({ setTimer: setTimer - 1 });
+      }
+    }
+
+    // timeIsOver() {
+    //   this.setState({ isDisabled: false, isAnswered: true });
+    // }
+
     render() {
-      const { index, questions } = this.state;
+      const { index, questions, isDisabled, setTimer } = this.state;
       const validate = questions.length > 1;
       return (
         <div>
           <div>
-            {/* to aqui */}
-            {validate && this.renderQuestions()[index] }
+            <p>{setTimer}</p>
+            {validate && this.renderQuestions()[index]}
+            { !isDisabled
+            && <Next handleClick={ this.handleClick } isDisabled={ isDisabled } /> }
           </div>
         </div>);
     }

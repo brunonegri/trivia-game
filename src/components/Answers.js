@@ -3,12 +3,14 @@ import PropTypes from 'prop-types';
 
 class Answers extends React.Component {
   render() {
-    const { dataTestId, handleClick, resposta } = this.props;
+    const { dataTestId, handleClickAswers, resposta, className, isDisabled } = this.props;
     return (
       <button
-        onClick={ handleClick }
+        disabled={ isDisabled }
+        onClick={ handleClickAswers }
         data-testid={ dataTestId }
         type="button"
+        className={ className }
       >
         {resposta}
 
@@ -18,9 +20,11 @@ class Answers extends React.Component {
 }
 
 Answers.propTypes = {
+  isDisabled: PropTypes.bool.isRequired,
   dataTestId: PropTypes.string.isRequired,
-  handleClick: PropTypes.func.isRequired,
+  handleClickAswers: PropTypes.func.isRequired,
   resposta: PropTypes.string.isRequired,
+  className: PropTypes.string.isRequired,
 };
 
 export default Answers;
