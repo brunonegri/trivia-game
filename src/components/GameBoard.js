@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { questionApi } from '../services/Api';
 import Answers from './Answers';
 import Next from './Next';
-import Timer from './Timer';
+// import Questions from './Questions';
 // import PropTypes from 'prop-types';
 
 class GameBoard extends React.Component {
@@ -12,6 +12,7 @@ class GameBoard extends React.Component {
       index: 0,
       isDisabled: true,
       isAnswered: false,
+      setTimer: 30,
     }
 
     async componentDidMount() {
@@ -21,7 +22,9 @@ class GameBoard extends React.Component {
       this.setState({
         questions: fetchQuestions.results,
       });
-      this.getAnswers();
+      // this.getAnswers();
+      const segundo = 1000;
+      setInterval(() => this.timeOut(), segundo);
     }
 
     handleClickAnswers = () => {
@@ -35,6 +38,7 @@ class GameBoard extends React.Component {
         ...prev, index: acc + 1,
       }));
       this.setState({ isDisabled: true, isAnswered: false });
+      this.setState({ setTimer: 30 });
     }
 
     renderQuestions = () => {
@@ -56,6 +60,7 @@ class GameBoard extends React.Component {
       const { questions, index, isAnswered } = this.state;
       const respostas = [];
       const correctAnswer = (<Answers
+        isDisabled={ isAnswered }
         handleClickAswers={ this.handleClickAnswers }
         dataTestId="correct-answer"
         resposta={ questions[index].correct_answer }
@@ -65,6 +70,7 @@ class GameBoard extends React.Component {
       questions[index]
         .incorrect_answers.forEach((elemento, i) => respostas
           .push(<Answers
+            isDisabled={ isAnswered }
             handleClickAswers={ this.handleClickAnswers }
             dataTestId={ `wrong-answer-${i}` }
             resposta={ elemento }
@@ -72,17 +78,29 @@ class GameBoard extends React.Component {
           />));
       const mN = 0.5;
       const randon = () => (Math.round(Math.random()) - mN);
-      // console.log(respostas.sort(randon));
       return (respostas.sort(randon));
     }
 
+    timeOut= () => {
+      const { setTimer } = this.state;
+      if (setTimer === 0) {
+        this.handleClickAnswers();
+      } else {
+        this.setState({ setTimer: setTimer - 1 });
+      }
+    }
+
+    // timeIsOver() {
+    //   this.setState({ isDisabled: false, isAnswered: true });
+    // }
+
     render() {
-      const { index, questions, isDisabled } = this.state;
+      const { index, questions, isDisabled, setTimer } = this.state;
       const validate = questions.length > 1;
       return (
         <div>
           <div>
-            <Timer />
+            <p>{setTimer}</p>
             {validate && this.renderQuestions()[index]}
             { !isDisabled
             && <Next handleClick={ this.handleClick } isDisabled={ isDisabled } /> }
