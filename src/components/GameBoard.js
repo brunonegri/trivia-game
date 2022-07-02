@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { questionApi } from '../services/Api';
 import Answers from './Answers';
-import { setScore } from '../redux/actions';
+import { setAssertions, setScore } from '../redux/actions';
 import Next from './Next';
 // import Questions from './Questions';
 // import PropTypes from 'prop-types';
@@ -19,6 +19,7 @@ class GameBoard extends React.Component {
       setTimer: 30,
       count: 0,
       ifFinish: false,
+      assertions: 0,
     }
 
     async componentDidMount() {
@@ -90,9 +91,8 @@ class GameBoard extends React.Component {
 
     setScore = (event) => {
       const { innerText } = event;
-      const { dispatchScore } = this.props;
+      const { dispatchScore, dispatchAssertions } = this.props;
       const { difficulty, setTimer, questions, index } = this.state;
-
       const numberCalculate = 10;
 
       const calculateScore = numberCalculate + (setTimer * difficulty);
@@ -101,10 +101,13 @@ class GameBoard extends React.Component {
 
       if (correctAnswer === innerText) {
         this.setState((prev) => ({
-          ...prev, score: prev.score + calculateScore,
+          ...prev,
+          score: prev.score + calculateScore,
+          assertions: prev.assertions + 1,
         }), () => {
-          const { score } = this.state;
+          const { score, assertions } = this.state;
           dispatchScore(score);
+          dispatchAssertions(assertions);
         });
       }
     }
@@ -164,12 +167,14 @@ class GameBoard extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchScore: (infoScore) => dispatch(setScore(infoScore)),
+  dispatchAssertions: (assertions) => dispatch(setAssertions(assertions)),
 });
 
 export default connect(null, mapDispatchToProps)(GameBoard);
 
 GameBoard.propTypes = {
   dispatchScore: PropTypes.func.isRequired,
+  dispatchAssertions: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
