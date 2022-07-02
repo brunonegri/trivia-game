@@ -9,9 +9,18 @@ class Ranking extends React.Component {
   }
 
   render() {
+    const rankingPLayers = JSON.parse(localStorage.getItem('ranking'));
+    console.log(rankingPLayers.sort());
+    const sortRank = rankingPLayers.sort((a, b) => ((b.score - a.score)));
     return (
       <div>
         <h1 data-testid="ranking-title">RANKING</h1>
+        {sortRank.map((player, i) => (
+          <div key={ i }>
+            <img src={ player.picture } alt="playerPic" />
+            <p data-testid={ `player-name-${i}` }>{player.name}</p>
+            <p data-testid={ `player-score-${i}` }>{player.score}</p>
+          </div>))}
         <button
           onClick={ this.handleClick }
           type="button"

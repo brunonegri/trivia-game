@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import md5 from 'crypto-js/md5';
 import { questionApi } from '../services/Api';
 import Answers from './Answers';
 import { setAssertions, setScore } from '../redux/actions';
@@ -46,7 +47,18 @@ class GameBoard extends React.Component {
       const acc = index;
       const maxIndex = 3;
       if (index > maxIndex) {
-        const { history } = this.props;
+        const { history, name, email, score } = this.props;
+        const user = md5(email).toString();
+        const gravatarPic = `https://www.gravatar.com/avatar/${user}`;
+        const ranking = JSON.parse(localStorage.getItem('ranking')) || [];
+        console.log(ranking);
+        const localObj = {
+          name,
+          score,
+          picture: gravatarPic,
+        };
+        ranking.push(localObj);
+        localStorage.setItem('ranking', JSON.stringify(ranking));
         history.push('/feedback');
       }
       this.setState((prev) => ({
@@ -146,10 +158,6 @@ class GameBoard extends React.Component {
       }
     }
 
-    // timeIsOver() {
-    //   this.setState({ isDisabled: false, isAnswered: true });
-    // }
-
     render() {
       const { index, questions, isDisabled, setTimer } = this.state;
       const validate = questions.length > 1;
@@ -170,9 +178,18 @@ const mapDispatchToProps = (dispatch) => ({
   dispatchAssertions: (assertions) => dispatch(setAssertions(assertions)),
 });
 
-export default connect(null, mapDispatchToProps)(GameBoard);
+const mapStateToProps = (state) => ({
+  name: state.player.name,
+  score: state.player.score,
+  email: state.player.gravatarEmail,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(GameBoard);
 
 GameBoard.propTypes = {
+  name: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
+  email: PropTypes.string.isRequired,
   dispatchScore: PropTypes.func.isRequired,
   dispatchAssertions: PropTypes.func.isRequired,
   history: PropTypes.shape({
