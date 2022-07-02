@@ -17,6 +17,8 @@ class GameBoard extends React.Component {
       isDisabled: true,
       isAnswered: false,
       setTimer: 30,
+      count: 0,
+      ifFinish: false,
     }
 
     async componentDidMount() {
@@ -41,11 +43,22 @@ class GameBoard extends React.Component {
     handleClick = () => {
       const { index } = this.state;
       const acc = index;
+      const maxIndex = 3;
+      if (index > maxIndex) {
+        const { history } = this.props;
+        history.push('/feedback');
+      }
       this.setState((prev) => ({
         ...prev, index: acc + 1,
-      }), () => this.setDifficulty());
+      }), () => {
+        this.setDifficulty();
+      });
       this.setState({ isDisabled: true, isAnswered: false });
       this.setState({ setTimer: 30 });
+
+      this.setState((prev) => ({
+        count: prev.count + 1,
+      }));
     }
 
     renderQuestions = () => {
@@ -85,7 +98,6 @@ class GameBoard extends React.Component {
       const numberCalculate = 10;
 
       const calculateScore = numberCalculate + (setTimer * difficulty);
-      console.log(difficulty);
 
       const correctAnswer = questions[index].correct_answer;
 
@@ -160,4 +172,7 @@ export default connect(null, mapDispatchToProps)(GameBoard);
 
 GameBoard.propTypes = {
   dispatchScore: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
