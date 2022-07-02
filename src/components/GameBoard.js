@@ -79,7 +79,6 @@ class GameBoard extends React.Component {
 
     setDifficulty = () => {
       const { questions, index } = this.state;
-      /* console.log(questions[index].difficulty); */
       if (questions[index].difficulty === 'easy') {
         this.setState({ difficulty: 1 });
       } else if (questions[index].difficulty === 'medium') {
@@ -87,7 +86,6 @@ class GameBoard extends React.Component {
       } else if (questions[index].difficulty === 'hard') {
         this.setState({ difficulty: 3 });
       }
-      /* console.log(questions); */
     }
 
     setScore = (event) => {
