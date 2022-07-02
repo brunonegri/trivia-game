@@ -22,10 +22,11 @@ class Game extends React.Component {
   }
 
   render() {
+    const { history } = this.props;
     return (
       <div>
         <Header />
-        <GameBoard />
+        <GameBoard history={ history } />
       </div>);
   }
 }

@@ -18,11 +18,13 @@ class Login extends React.Component {
     }
 
     handleClick = async () => {
+      console.log('ants');
       const { dispatchLogin, dispatchToken } = this.props;
       await dispatchToken();
       dispatchLogin(this.state);
       const { history } = this.props;
       history.push('/game');
+      console.log('depois');
     }
 
     render() {
