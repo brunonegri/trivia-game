@@ -13,10 +13,10 @@ class Ranking extends React.Component {
     console.log(rankingPLayers.sort());
     const sortRank = rankingPLayers.sort((a, b) => ((b.score - a.score)));
     return (
-      <div>
+      <div className="rankings-container">
         <h1 data-testid="ranking-title">RANKING</h1>
         {sortRank.map((player, i) => (
-          <div key={ i }>
+          <div className="players-ranking" key={ i }>
             <img src={ player.picture } alt="playerPic" />
             <p data-testid={ `player-name-${i}` }>{player.name}</p>
             <p data-testid={ `player-score-${i}` }>{player.score}</p>

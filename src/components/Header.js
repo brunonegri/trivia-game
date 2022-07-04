@@ -8,10 +8,13 @@ class Header extends Component {
     const { email, name, score } = this.props;
     const user = md5(email).toString();
     return (
-      <header>
+      <header className="header-container">
         <img src={ `https://www.gravatar.com/avatar/${user}` } alt="avatar" data-testid="header-profile-picture" />
-        <p data-testid="header-player-name">{name}</p>
-        <div data-testid="header-score">{score}</div>
+        <div>
+          <p id="user-name" data-testid="header-player-name">{name}</p>
+          <span>SCORE: </span>
+          <span id="score" data-testid="header-score">{score}</span>
+        </div>
       </header>
     );
   }

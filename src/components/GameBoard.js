@@ -170,8 +170,9 @@ class GameBoard extends React.Component {
       const validate = questions.length > 1;
       return (
         <div>
-          <div>
-            <p>{setTimer}</p>
+          <div className="gameBoard-container">
+            <hr />
+            <p id="timer">{`Tempo: ${setTimer}`}</p>
             {/* {questions.map((question, i) => (
               <Question
                 key={ i }

@@ -8,8 +8,8 @@ describe('Testes na pagina de Login',() => {
 
     test('Testa se renderiza inputs',() => {
         renderWithRouterAndRedux(<App/>)
-        const nameInput = screen.getByText(/nome:/i)
-        const emailInput = screen.getByText(/email:/i)
+        const nameInput = screen.getByTestId('input-player-name')
+        const emailInput = screen.getByTestId('input-gravatar-email')
         const playButton = screen.getByRole('button', {  name: /play/i})
         const configButton = screen.getByRole('button', {
             name: /configurações/i
