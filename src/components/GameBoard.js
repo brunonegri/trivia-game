@@ -74,14 +74,21 @@ class GameBoard extends React.Component {
       }));
     }
 
+    // função retirada da thread do Jessy Damasceno no Slack
+    decodeEntity=(inputStr) => {
+      const textarea = document.createElement('textarea');
+      textarea.innerHTML = inputStr;
+      return textarea.value;
+    }
+
     renderQuestions = () => {
       const { questions } = this.state;
       /* console.log(questions); */
       const arrayQ = questions.map((pergunta, index) => (
-        <div key={ index } className="questions-container">
-          <p id="difficulty">{`Dificuldade: ${pergunta.difficulty}`}</p>
-          <p id="category" data-testid="question-category">{pergunta.category}</p>
-          <p id="questions" data-testid="question-text">{pergunta.question}</p>
+        <div key={ index }>
+          <p>{`Dificuldade: ${pergunta.difficulty}`}</p>
+          <p data-testid="question-category">{pergunta.category}</p>
+          <p data-testid="question-text">{this.decodeEntity(pergunta.question)}</p>
           <div data-testid="answer-options">
             {this.getAnswers()}
           </div>

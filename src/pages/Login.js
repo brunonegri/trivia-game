@@ -27,13 +27,21 @@ class Login extends React.Component {
       // console.log('depois');
     }
 
+    validEmailAndPassword= () => {
+      const { gravatarEmail, name } = this.state;
+
+      const regexEmail = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
+      const verify = regexEmail.test(gravatarEmail);
+
+      const minCharacters = 1;
+      return !(verify && name.length >= minCharacters);
+    }
+
     render() {
       const {
         name,
         gravatarEmail,
       } = this.state;
-
-      const validate = (name.length >= 1 && gravatarEmail.length >= 1);
 
       return (
         <div className="main-login">
@@ -63,7 +71,7 @@ class Login extends React.Component {
               <button
                 type="submit"
                 data-testid="btn-play"
-                disabled={ !validate }
+                disabled={ this.validEmailAndPassword() }
                 onClick={ this.handleClick }
               >
                 Play
