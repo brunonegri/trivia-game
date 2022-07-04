@@ -33,13 +33,10 @@ describe('Testes na pagina de Feedback',()=>{
         userEvent.click(btnPlayAgain)
         expect(history.location.pathname).toBe('/')
     })
-    test('testa se o botão de Ranking está na tela', async ()=>{
+    test('testa se o botão de Ranking está na tela', ()=>{
         const {history}=renderWithRouterAndRedux(<App/>)
         history.push('/feedback')
         const btnRanking = screen.getByTestId('btn-ranking')
         expect(btnRanking).toBeInTheDocument()
-        userEvent.click(btnRanking)
-        await expect(history.location.pathname).toBe('/ranking')
     })
-
 })
