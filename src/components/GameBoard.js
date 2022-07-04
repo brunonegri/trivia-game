@@ -78,10 +78,10 @@ class GameBoard extends React.Component {
       const { questions } = this.state;
       /* console.log(questions); */
       const arrayQ = questions.map((pergunta, index) => (
-        <div key={ index }>
-          <p>{`Dificuldade: ${pergunta.difficulty}`}</p>
-          <p data-testid="question-category">{pergunta.category}</p>
-          <p data-testid="question-text">{pergunta.question}</p>
+        <div key={ index } className="questions-container">
+          <p id="difficulty">{`Dificuldade: ${pergunta.difficulty}`}</p>
+          <p id="category" data-testid="question-category">{pergunta.category}</p>
+          <p id="questions" data-testid="question-text">{pergunta.question}</p>
           <div data-testid="answer-options">
             {this.getAnswers()}
           </div>
@@ -163,8 +163,9 @@ class GameBoard extends React.Component {
       const validate = questions.length > 1;
       return (
         <div>
-          <div>
-            <p>{setTimer}</p>
+          <div className="gameBoard-container">
+            <hr />
+            <p id="timer">{`Tempo: ${setTimer}`}</p>
             {/* {questions.map((question, i) => (
               <Question
                 key={ i }

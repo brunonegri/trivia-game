@@ -38,8 +38,8 @@ class Login extends React.Component {
       return (
         <div className="main-login">
           <div className="login-container">
+            <h1>TRIVIA</h1>
             <label htmlFor="name">
-              Nome:
               <input
                 type="text"
                 name="name"
@@ -50,7 +50,6 @@ class Login extends React.Component {
               />
             </label>
             <label htmlFor="email">
-              Email:
               <input
                 type="email"
                 name="gravatarEmail"

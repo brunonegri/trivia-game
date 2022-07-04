@@ -19,15 +19,16 @@ class Feedback extends React.Component {
     const n3 = 3;
     console.log(assertions);
     return (
-      <div>
-        <h1 data-testid="feedback-text">
+      <div className="feedback-container">
+        <div className="feedback-text" data-testid="feedback-text">
           <Header />
+          <hr />
           {assertions < n3
             ? <p data-testid="feedback-text">Could be better...</p>
             : <p data-testid="feedback-text">Well Done!</p> }
           <p data-testid="feedback-total-score">{score}</p>
           <p data-testid="feedback-total-question">{assertions}</p>
-        </h1>
+        </div>
         <button
           onClick={ this.handleClick }
           type="button"
