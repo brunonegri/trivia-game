@@ -3,7 +3,6 @@ import { screen, waitFor } from '@testing-library/react';
 import {renderWithRouterAndRedux} from './helpers/renderWithRouterAndRedux'
 import App from '../App'
 import userEvent from '@testing-library/user-event';
-import fetchMock from 'fetch-mock-jest';
 
 describe('Testes na pagina de Login',() => {
 

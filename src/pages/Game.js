@@ -13,7 +13,7 @@ class Game extends React.Component {
   validateToken = () => {
     const { history } = this.props;
     const localToken = localStorage.getItem('token');
-    console.log(localToken.length);
+    // console.log(localToken.length);
     const tokenValid = 64;
     if (localToken.length < tokenValid) {
       localStorage.removeItem('token');

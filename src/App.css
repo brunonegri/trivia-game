@@ -4,14 +4,36 @@ body {
   padding: 0;
 }
 
-.App {
-  text-align: center;
+/* LOGIN */
+.main-login {
+  align-items: center;
+  border: 5px solid green;
+  display: flex;
+  height: 100vh;
+  justify-content: center;
 }
 
-.App-logo {
-  height: 15vmin;
-  pointer-events: none;
+.login-container {
+  align-items: center;
+  border: 2px solid red;
+  display: flex;
+  flex-direction: column;
+  height: 40vh;
+  justify-content: center;
+  padding: 30px;
 }
+
+.login-container label {
+  padding: 1px;
+}
+
+.login-container input {
+
+  /* border: 1px solid blue; */
+  border-radius: 8px;
+  margin-left: 4px;
+}
+
 
 .red-border {
   border: 3px solid red;
@@ -19,45 +41,4 @@ body {
 
 .green-border {
   border: 3px solid rgb(6, 240, 15);
-}
-
-@media ( prefers-reduced-motion : no-preference ) {
-
-  .App-logo {
-    animation: shake infinite 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-  }
-}
-
-.App-header {
-  align-items: center;
-  background-color: #282c34;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  font-size: calc(10px + 2vmin);
-  justify-content: center;
-  min-height: 100vh;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes shake {
-
-  10%, 90% {
-    transform: translate3d(-1px, 0, 0);
-  }
-
-  20%, 80% {
-    transform: translate3d(2px, 0, 0);
-  }
-
-  30%, 50%, 70% {
-    transform: translate3d(-4px, 0, 0);
-  }
-
-  40%, 60% {
-    transform: translate3d(4px, 0, 0);
-  }
 }
