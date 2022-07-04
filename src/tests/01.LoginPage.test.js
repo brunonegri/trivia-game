@@ -3,7 +3,6 @@ import { screen, waitFor } from '@testing-library/react';
 import {renderWithRouterAndRedux} from './helpers/renderWithRouterAndRedux'
 import App from '../App'
 import userEvent from '@testing-library/user-event';
-import fetchMock from 'fetch-mock-jest';
 
 describe('Testes na pagina de Login',() => {
 
@@ -29,7 +28,7 @@ describe('Testes na pagina de Login',() => {
         expect(inputEmail).toHaveValue('email@email.com.br')
         expect(inputNome).toHaveValue('nomeDeExemplo')
     })
-    test('Testa se redireciona para tela de jogo',() => {
+    test('Testa se redireciona para tela de jogo', async() => {
         const {history}=renderWithRouterAndRedux(<App/>)
         const inputEmail = screen.getByTestId('input-gravatar-email')
         const inputNome = screen.getByTestId('input-player-name')
@@ -39,7 +38,7 @@ describe('Testes na pagina de Login',() => {
         userEvent.click(playButton)
 
         const {pathname} = history.location
-        expect(pathname).toBe('/game')
+        await waitFor(()=>expect(pathname).toBe('/game'), {timeout:5000})
     })
     test('Testa se redireciona para tela de configurações',() => {
         const {history}=renderWithRouterAndRedux(<App/>)

@@ -6,7 +6,7 @@ import { questionApi } from '../services/Api';
 import Answers from './Answers';
 import { setAssertions, setScore } from '../redux/actions';
 import Next from './Next';
-// import Questions from './Questions';
+// import Question from './Question';
 // import PropTypes from 'prop-types';
 
 class GameBoard extends React.Component {
@@ -165,6 +165,16 @@ class GameBoard extends React.Component {
         <div>
           <div>
             <p>{setTimer}</p>
+            {/* {questions.map((question, i) => (
+              <Question
+                key={ i }
+                difficulty={ question.difficulty }
+                category={ question.category }
+                question={ question.question }
+                getAnswers={ this.getAnswers() }
+                index={ index }
+              />
+            ))[index]} */}
             {validate && this.renderQuestions()[index]}
             { !isDisabled
             && <Next handleClick={ this.handleClick } isDisabled={ isDisabled } /> }
