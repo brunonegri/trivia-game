@@ -5,7 +5,7 @@ body {
   background-size: cover;
   box-sizing: border-box;
   display: flex;
-  font-family: 'Lucida Sans' , 'Lucida Sans Regular' , 'Lucida Grande' , 'Lucida Sans Unicode' , Geneva , Verdana , sans-serif;
+  font-family: Lucida Sans , sans-serif;
   height: 100vh;
   justify-content: center;
   margin: 0;
@@ -53,11 +53,47 @@ body {
 
 .login-container button {
   border-radius: 8px;
+  cursor: pointer;
   font-size: 18px;
   margin-bottom: 50px;
   margin-left: 4px;
   margin-top: 50px;
   padding: 10px 30px;
+  transition: background 400ms;
+}
+
+.gameBoard-container button {
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 20px;
+  margin-bottom: 50px;
+  margin-left: 4px;
+  padding: 10px 50px;
+  transition: background 400ms;
+}
+
+.feedback-container button {
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 20px;
+  margin-bottom: 50px;
+  margin-left: 4px;
+  padding: 10px 50px;
+}
+
+.rankings-container button {
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 20px;
+  margin-left: 4px;
+  margin-top: 50px;
+  padding: 10px 50px;
+}
+
+
+.login-container button:hover {
+  background: rgb(84, 81, 81);
+  color: white;
 }
 
 
@@ -139,12 +175,10 @@ body {
 
 }
 
-.gameBoard-container button {
-  border-radius: 8px;
-  font-size: 20px;
-  margin-bottom: 50px;
-  margin-left: 4px;
-  padding: 10px 50px;
+
+.gameBoard-container button:hover {
+  background: rgb(84, 81, 81);
+  color: white;
 }
 
 
@@ -175,12 +209,12 @@ body {
   justify-content: center;
 }
 
-.questions-container button {
+/* .questions-container button {
   border-radius: 8px;
   margin-bottom: 50px;
   margin-left: 4px;
   padding: 10px 20px;
-}
+} */
 
 .question {
   font-size: 18px;
@@ -232,12 +266,10 @@ hr {
   text-align: center;
 }
 
-.feedback-container button {
-  border-radius: 8px;
-  font-size: 20px;
-  margin-bottom: 50px;
-  margin-left: 4px;
-  padding: 10px 50px;
+
+.feedback-container button:hover {
+  background: rgb(84, 81, 81);
+  color: white;
 }
 
 .feedback-container span {
@@ -264,13 +296,11 @@ hr {
   width: 60%;
 }
 
-.rankings-container button {
-  border-radius: 8px;
-  font-size: 20px;
-  margin-left: 4px;
-  margin-top: 50px;
-  padding: 10px 50px;
+.rankings-container button:hover {
+  background: rgb(84, 81, 81);
+  color: white;
 }
+
 
 .rankings-container h1 {
   margin-bottom: 50px;
