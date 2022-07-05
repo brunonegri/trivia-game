@@ -5,7 +5,7 @@ class Settings extends React.Component {
     return (
       <div className="settings-container">
         <img
-          id="icon-config-img"
+          className="icon-config-img"
           src="https://img.icons8.com/ios-filled/344/automatic.png"
           alt="icon-config"
         />

@@ -85,10 +85,15 @@ class GameBoard extends React.Component {
       const { questions } = this.state;
       /* console.log(questions); */
       const arrayQ = questions.map((pergunta, index) => (
-        <div key={ index }>
-          <p>{`Dificuldade: ${pergunta.difficulty}`}</p>
-          <p data-testid="question-category">{pergunta.category}</p>
-          <p data-testid="question-text">{this.decodeEntity(pergunta.question)}</p>
+        <div className="questions-container" key={ index }>
+          <p className="category" data-testid="question-category">{pergunta.category}</p>
+          <p
+            className="question"
+            data-testid="question-text"
+          >
+            {this.decodeEntity(pergunta.question)}
+
+          </p>
           <div data-testid="answer-options">
             {this.getAnswers()}
           </div>
@@ -172,7 +177,10 @@ class GameBoard extends React.Component {
         <div>
           <div className="gameBoard-container">
             <hr />
-            <p id="timer">{`Tempo: ${setTimer}`}</p>
+            <div className="timer-container">
+              <img className="cronometro" src="https://cdn.icon-icons.com/icons2/785/PNG/512/stopwatch_icon-icons.com_64805.png" alt="timer" />
+              <p className="timer">{`${setTimer}`}</p>
+            </div>
             {/* {questions.map((question, i) => (
               <Question
                 key={ i }

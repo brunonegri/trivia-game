@@ -11,9 +11,12 @@ class Header extends Component {
       <header className="header-container">
         <img src={ `https://www.gravatar.com/avatar/${user}` } alt="avatar" data-testid="header-profile-picture" />
         <div>
-          <p id="user-name" data-testid="header-player-name">{name}</p>
-          <span>SCORE: </span>
-          <span id="score" data-testid="header-score">{score}</span>
+          <p className="user-name" data-testid="header-player-name">{name}</p>
+          <p>
+            SCORE:
+            <span className="score" data-testid="header-score">{score}</span>
+
+          </p>
         </div>
       </header>
     );
