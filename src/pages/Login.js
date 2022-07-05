@@ -46,7 +46,7 @@ class Login extends React.Component {
       return (
         <div className="main-login">
           <div className="login-container">
-            <h1>TRIVIA</h1>
+            <h1>Trybe Trivia</h1>
             <label htmlFor="name">
               <input
                 type="text"

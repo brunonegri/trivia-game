@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Lobster&family=Pacifico&display=swap');
+
 body {
   align-items: center;
   background-image: url('https://static.vecteezy.com/ti/vetor-gratis/p1/1895648-ponto-de-interrogacao-no-do-fundo-do-quadro-vetor.jpg');
@@ -35,7 +37,11 @@ body {
 }
 
 .login-container h1 {
+  font-family: Pacifico , cursive;
+  font-size: 40px;
+  font-weight: 400;
   margin-bottom: 60px;
+  opacity: 70%;
 }
 
 .login-container label {
