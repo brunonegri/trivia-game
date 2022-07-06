@@ -26,8 +26,14 @@ class Feedback extends React.Component {
           {assertions < n3
             ? <p data-testid="feedback-text">Could be better...</p>
             : <p data-testid="feedback-text">Well Done!</p> }
-          <p data-testid="feedback-total-score">{score}</p>
-          <p data-testid="feedback-total-question">{assertions}</p>
+          <span>
+            SCORE:
+            <p data-testid="feedback-total-score">{score}</p>
+          </span>
+          <span>
+            Assertions:
+            <p data-testid="feedback-total-question">{assertions}</p>
+          </span>
         </div>
         <button
           onClick={ this.handleClick }

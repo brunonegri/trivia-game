@@ -1,14 +1,9 @@
-import { tokenApi } from '../../services/Api';
-import { LOGIN, SEND_TOKEN, SET_SCORE, SET_ASSERTIONS } from './ActionsType';
+import { LOGIN,
+  SET_SCORE, SET_TIMER, SET_ANSWERS, SET_ASSERTIONS, SET_QUESTION } from './ActionsType';
 
 const userLogin = (value) => ({
   type: LOGIN,
   payload: value,
-});
-
-const sendToken = (token) => ({
-  type: SEND_TOKEN,
-  payload: token,
 });
 
 const setScore = (score) => ({
@@ -20,11 +15,19 @@ const setAssertions = (assertions) => ({
   payload: assertions,
 });
 
-const getToken = () => async (dispatch) => {
-  const tokenResponse = await tokenApi();
-  // console.log(tokenResponse.token);
-  localStorage.setItem('token', tokenResponse.token);
-  dispatch(sendToken(tokenResponse.token));
-};
+const setQuestions = (questions) => ({
+  type: SET_QUESTION,
+  payload: questions,
+});
 
-export { userLogin, getToken, setScore, setAssertions };
+const setAnswers = (answers) => ({
+  type: SET_ANSWERS,
+  payload: answers,
+});
+
+const setTimeout = (timer) => ({
+  type: SET_TIMER,
+  payload: timer,
+});
+
+export { setAnswers, setTimeout, userLogin, setQuestions, setScore, setAssertions };

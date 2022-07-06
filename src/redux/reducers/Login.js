@@ -1,4 +1,4 @@
-import { LOGIN, SEND_QUESTION, SET_SCORE, SET_ASSERTIONS } from '../actions/ActionsType';
+import { LOGIN, SET_QUESTION, SET_SCORE, SET_ASSERTIONS } from '../actions/ActionsType';
 
 const initialState = {
   name: '',
@@ -16,7 +16,7 @@ const player = (state = initialState, action) => {
       score: 0,
       gravatarEmail: action.payload.gravatarEmail,
     };
-  case SEND_QUESTION:
+  case SET_QUESTION:
     return { ...state };
   case SET_SCORE:
     return { ...state,
