@@ -15,7 +15,6 @@ class Header extends Component {
           <p>
             SCORE:
             <span className="score" data-testid="header-score">{score}</span>
-
           </p>
         </div>
       </header>

@@ -1,28 +1,71 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Answers from './Answers';
+import { setAssertions, setScore } from '../redux/actions';
 
 class Question extends React.Component {
+  decodeEntity=(inputStr) => {
+    const textarea = document.createElement('textarea');
+    textarea.innerHTML = inputStr;
+    return textarea.value;
+  }
+
+  setScore = (answer, question) => {
+    const { setTimer, assertions, score, dispatchScore, dispatchAssertions } = this.props;
+    const numberCalculate = 10;
+    const difficultyPoints = {
+      easy: 1,
+      medium: 2,
+      hard: 3,
+    };
+    if (answer === question.correct_answer) {
+      const calculateScore = numberCalculate
+       + (setTimer * difficultyPoints[question.difficulty]);
+      const newScore = score + calculateScore;
+      const newAssertions = assertions + 1;
+      dispatchScore(newScore);
+      dispatchAssertions(newAssertions);
+    }
+  }
+
+  checkAnswer = (answered, question, answer) => {
+    if (!answered) {
+      return '';
+    }
+    if (answered && question.includes(answer)) {
+      return 'red-border';
+    }
+    return 'green-border';
+  }
+
   render() {
-    const { difficulty, category, question, getAnswers, handleClickAnswers, index, answers, isDisabled } = this.props;
+    const { question, handleClickAnswers, isAnswered, isDisabled } = this.props;
+    const answers = question.shuffledAnswers;
     return (
-      <div key={ index }>
-        <p>{`Dificuldade: ${difficulty}`}</p>
-        <p data-testid="question-category">{category}</p>
-        <p data-testid="question-text">{question}</p>
+      <div className="questions-container">
+        <p className="category" data-testid="question-category">{question.category}</p>
+        <p
+          className="question"
+          data-testid="question-text"
+        >
+          {this.decodeEntity(question.question)}
+        </p>
         <div data-testid="answer-options">
-          {getAnswers}
-          {/* {answers.map((elemento) => (
-            <Answers
+          {answers.map((answer, index) => (
+            <button
+              type="button"
               key={ index }
-              isDisabled={ isDisabled }
-              handleClickAswers={ handleClickAnswers }
-              dataTestId={ `wrong-answer-${index}` }
-              resposta={ elemento }
-              className={ isDisabled ? 'red-border' : 'not-answered' }
-            />
-          ))} */}
+              disabled={ isDisabled }
+              data-testid={ question.incorrect_answers.includes(answer)
+                ? `wrong-answer-${index}` : 'correct_answer' }
+              className={
+                this.checkAnswer(isAnswered, question.incorrect_answers, answer)
+              }
+              onClick={ () => handleClickAnswers(this.setScore(answer, question)) }
+            >
+              {answer}
+            </button>
+          ))}
         </div>
       </div>
     );
@@ -30,16 +73,25 @@ class Question extends React.Component {
 }
 
 Question.propTypes = {
-  answers: PropTypes.arrayOf(PropTypes.string).isRequired,
-  index: PropTypes.number.isRequired,
-  difficulty: PropTypes.string.isRequired,
-  category: PropTypes.string.isRequired,
-  question: PropTypes.string.isRequired,
-  getAnswers: PropTypes.arrayOf(PropTypes.any).isRequired,
+  setTimer: PropTypes.number.isRequired,
+  assertions: PropTypes.number.isRequired,
+  score: PropTypes.number.isRequired,
+  handleClickAnswers: PropTypes.func.isRequired,
+  question: PropTypes.objectOf(PropTypes.any).isRequired,
+  isAnswered: PropTypes.bool.isRequired,
+  isDisabled: PropTypes.bool.isRequired,
+  dispatchScore: PropTypes.func.isRequired,
+  dispatchAssertions: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  answers: state.gameReducer.answers,
+  score: state.player.score,
+  assertions: state.player.assertions,
 });
 
-export default connect(mapStateToProps)(Question);
+const mapDispatchToProps = (dispatch) => ({
+  dispatchScore: (infoScore) => dispatch(setScore(infoScore)),
+  dispatchAssertions: (assertions) => dispatch(setAssertions(assertions)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Question);
