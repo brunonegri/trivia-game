@@ -11,9 +11,7 @@ class GameBoard extends React.Component {
       questions: [],
       index: 0,
       isAnswered: false,
-      setTimer: 30,
-      ifFinish: false,
-      assertions: 0,
+      setTimer: 5,
     }
 
     async componentDidMount() {
@@ -25,13 +23,12 @@ class GameBoard extends React.Component {
         ...prevState,
         questions: [...shuffledQuestions],
       }));
-      // this.setDifficulty();
       this.timeOut();
     }
 
     componentWillUnmount() {
       const { interval } = this.state;
-      this.timeIsOver(interval);
+      clearInterval(interval);
     }
 
     shuffleAnswers = (respostas) => {
@@ -49,7 +46,7 @@ class GameBoard extends React.Component {
       const umSegundo = 1000;
       const interval = setInterval(() => {
         if (setTimer === 0) {
-          this.timeIsOver(interval);
+          clearInterval(interval);
         } else {
           this.setState((prevState) => ({
             ...prevState,
@@ -60,12 +57,8 @@ class GameBoard extends React.Component {
       }, umSegundo);
     }
 
-    timeIsOver=(interval) => {
-      clearInterval(interval);
-    }
-
     handleClickAnswers = () => {
-      this.setState({ isDisabled: false, isAnswered: true });
+      this.setState({ isAnswered: true });
     }
 
     handleClick = () => {
@@ -94,7 +87,7 @@ class GameBoard extends React.Component {
     }
 
     render() {
-      const { index, isDisabled, isAnswered, questions, setTimer } = this.state;
+      const { index, isAnswered, questions, setTimer } = this.state;
       console.log(questions);
       const validate = questions.length > 1;
       return (
@@ -113,7 +106,7 @@ class GameBoard extends React.Component {
                 handleClickAnswers={ this.handleClickAnswers }
                 setTimer={ setTimer }
               />}
-            { !isDisabled
+            { isAnswered
             && <Next handleClick={ this.handleClick } isDisabled={ !isAnswered } /> }
           </div>
         </div>);

@@ -57,7 +57,7 @@ class Question extends React.Component {
               key={ index }
               disabled={ isDisabled }
               data-testid={ question.incorrect_answers.includes(answer)
-                ? `wrong-answer-${index}` : 'correct_answer' }
+                ? `wrong-answer-${index}` : 'correct-answer' }
               className={
                 this.checkAnswer(isAnswered, question.incorrect_answers, answer)
               }
