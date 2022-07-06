@@ -4,14 +4,14 @@ import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
 import { questionApi } from '../services/Api';
 import Answers from './Answers';
-import { setAssertions, setScore } from '../redux/actions';
+import { setAnswers,
+  setAssertions, setQuestions, setScore, setTimeout } from '../redux/actions';
 import Next from './Next';
-// import Question from './Question';
-// import PropTypes from 'prop-types';
+import Timer from './Timer';
+import Question from './Question';
 
 class GameBoard extends React.Component {
     state = {
-      questions: [],
       index: 0,
       score: 0,
       difficulty: 0,
@@ -23,15 +23,17 @@ class GameBoard extends React.Component {
       assertions: 0,
     }
 
-    async componentDidMount() {
+    componentDidMount() {
+      
+      this.setStateQuestions();
+      // this.setDifficulty();
+    }
+
+    setStateQuestions= async () => {
+      const { dispatchQuestions } = this.props;
       const localToken = localStorage.getItem('token');
-      /* console.log(localToken); */
       const fetchQuestions = await questionApi(localToken);
-      this.setState({
-        questions: fetchQuestions.results,
-      }, () => this.setDifficulty());
-      const segundo = 1000;
-      setInterval(() => this.timeOut(), segundo);
+      dispatchQuestions(fetchQuestions.results);
     }
 
     handleClickAnswers = (event) => {
@@ -44,14 +46,14 @@ class GameBoard extends React.Component {
 
     handleClick = () => {
       const { index } = this.state;
+      const { history, name, email, score, dispatchTimer } = this.props;
       const acc = index;
       const maxIndex = 3;
       if (index > maxIndex) {
-        const { history, name, email, score } = this.props;
         const user = md5(email).toString();
         const gravatarPic = `https://www.gravatar.com/avatar/${user}`;
         const ranking = JSON.parse(localStorage.getItem('ranking')) || [];
-        console.log(ranking);
+
         const localObj = {
           name,
           score,
@@ -67,7 +69,8 @@ class GameBoard extends React.Component {
         this.setDifficulty();
       });
       this.setState({ isDisabled: true, isAnswered: false });
-      this.setState({ setTimer: 30 });
+      const n30 = 30;
+      dispatchTimer(n30);
 
       this.setState((prev) => ({
         count: prev.count + 1,
@@ -82,7 +85,7 @@ class GameBoard extends React.Component {
     }
 
     renderQuestions = () => {
-      const { questions } = this.state;
+      const { questions } = this.props;
       /* console.log(questions); */
       const arrayQ = questions.map((pergunta, index) => (
         <div className="questions-container" key={ index }>
@@ -103,7 +106,8 @@ class GameBoard extends React.Component {
     }
 
     setDifficulty = () => {
-      const { questions, index } = this.state;
+      const { index } = this.state;
+      const { questions } = this.props;
       if (questions[index].difficulty === 'easy') {
         this.setState({ difficulty: 1 });
       } else if (questions[index].difficulty === 'medium') {
@@ -115,8 +119,8 @@ class GameBoard extends React.Component {
 
     setScore = (event) => {
       const { innerText } = event;
-      const { dispatchScore, dispatchAssertions } = this.props;
-      const { difficulty, setTimer, questions, index } = this.state;
+      const { dispatchScore, dispatchAssertions, questions } = this.props;
+      const { difficulty, setTimer, index } = this.state;
       const numberCalculate = 10;
 
       const calculateScore = numberCalculate + (setTimer * difficulty);
@@ -137,7 +141,13 @@ class GameBoard extends React.Component {
     }
 
     getAnswers = () => {
-      const { questions, index, isAnswered } = this.state;
+      const { index, isAnswered } = this.state;
+      const { questions, dispatchAnswers } = this.props;
+      const correctAnswers = questions[index].correct_answer;
+      const incorrectAnswers = questions[index].incorrect_answers;
+      const answers = [...incorrectAnswers, correctAnswers];
+      // console.log(answers);
+
       const respostas = [];
       const correctAnswer = (<Answers
         isDisabled={ isAnswered }
@@ -156,22 +166,14 @@ class GameBoard extends React.Component {
             resposta={ elemento }
             className={ isAnswered ? 'red-border' : 'not-answered' }
           />));
-      const mN = 0.5;
-      const randon = () => (Math.round(Math.random()) - mN);
-      return (respostas.sort(randon));
-    }
-
-    timeOut= () => {
-      const { setTimer } = this.state;
-      if (setTimer === 0) {
-        this.handleClickAnswers();
-      } else {
-        this.setState({ setTimer: setTimer - 1 });
-      }
+      dispatchAnswers(answers);
+      const mN = 0.5
+      return (respostas.sort(() => mN - Math.random()));
     }
 
     render() {
-      const { index, questions, isDisabled, setTimer } = this.state;
+      const { index, isDisabled, isAnswered } = this.state;
+      const { questions } = this.props;
       const validate = questions.length > 1;
       return (
         <div>
@@ -179,11 +181,13 @@ class GameBoard extends React.Component {
             <hr />
             <div className="timer-container">
               <img className="cronometro" src="https://cdn.icon-icons.com/icons2/785/PNG/512/stopwatch_icon-icons.com_64805.png" alt="timer" />
-              <p className="timer">{`${setTimer}`}</p>
+              <Timer />
             </div>
-            {/* {questions.map((question, i) => (
+            {/* {validate && questions.map((question, i) => (
               <Question
+                handleClickAnswers={ this.handleClickAnswers }
                 key={ i }
+                isDisabled={ isAnswered }
                 difficulty={ question.difficulty }
                 category={ question.category }
                 question={ question.question }
@@ -202,22 +206,32 @@ class GameBoard extends React.Component {
 const mapDispatchToProps = (dispatch) => ({
   dispatchScore: (infoScore) => dispatch(setScore(infoScore)),
   dispatchAssertions: (assertions) => dispatch(setAssertions(assertions)),
+  dispatchQuestions: (questions) => dispatch(setQuestions(questions)),
+  dispatchAnswers: (answers) => dispatch(setAnswers(answers)),
+  dispatchTimer: (timer) => dispatch(setTimeout(timer)),
 });
 
 const mapStateToProps = (state) => ({
   name: state.player.name,
   score: state.player.score,
   email: state.player.gravatarEmail,
+  questions: state.gameReducer.questions,
+  setTimer: state.gameReducer.timer,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameBoard);
 
 GameBoard.propTypes = {
+  // setTimer: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
   email: PropTypes.string.isRequired,
+  dispatchTimer: PropTypes.func.isRequired,
   dispatchScore: PropTypes.func.isRequired,
   dispatchAssertions: PropTypes.func.isRequired,
+  dispatchQuestions: PropTypes.func.isRequired,
+  dispatchAnswers: PropTypes.func.isRequired,
+  questions: PropTypes.arrayOf(PropTypes.any).isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,

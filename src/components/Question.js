@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import Answers from './Answers';
 
 class Question extends React.Component {
   render() {
-    const { difficulty, category, question, getAnswers, index } = this.props;
+    const { difficulty, category, question, getAnswers, handleClickAnswers, index, answers, isDisabled } = this.props;
     return (
       <div key={ index }>
         <p>{`Dificuldade: ${difficulty}`}</p>
@@ -11,6 +13,16 @@ class Question extends React.Component {
         <p data-testid="question-text">{question}</p>
         <div data-testid="answer-options">
           {getAnswers}
+          {/* {answers.map((elemento) => (
+            <Answers
+              key={ index }
+              isDisabled={ isDisabled }
+              handleClickAswers={ handleClickAnswers }
+              dataTestId={ `wrong-answer-${index}` }
+              resposta={ elemento }
+              className={ isDisabled ? 'red-border' : 'not-answered' }
+            />
+          ))} */}
         </div>
       </div>
     );
@@ -18,6 +30,7 @@ class Question extends React.Component {
 }
 
 Question.propTypes = {
+  answers: PropTypes.arrayOf(PropTypes.string).isRequired,
   index: PropTypes.number.isRequired,
   difficulty: PropTypes.string.isRequired,
   category: PropTypes.string.isRequired,
@@ -25,4 +38,8 @@ Question.propTypes = {
   getAnswers: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
 
-export default Question;
+const mapStateToProps = (state) => ({
+  answers: state.gameReducer.answers,
+});
+
+export default connect(mapStateToProps)(Question);

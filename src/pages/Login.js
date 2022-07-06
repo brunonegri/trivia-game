@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { userLogin, getToken } from '../redux/actions';
+import { userLogin } from '../redux/actions';
+import { tokenApi } from '../services/Api';
 
 class Login extends React.Component {
     state = {
@@ -18,13 +19,12 @@ class Login extends React.Component {
     }
 
     handleClick = async () => {
-      // console.log('ants');
-      const { dispatchLogin, dispatchToken } = this.props;
-      await dispatchToken();
+      const tokenResponse = await tokenApi();
+      localStorage.setItem('token', tokenResponse.token);
+      const { dispatchLogin } = this.props;
       dispatchLogin(this.state);
       const { history } = this.props;
       history.push('/game');
-      // console.log('depois');
     }
 
     validEmailAndPassword= () => {
@@ -94,14 +94,12 @@ class Login extends React.Component {
 
 Login.propTypes = {
   dispatchLogin: PropTypes.func.isRequired,
-  dispatchToken: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  dispatchToken: async () => dispatch(getToken()),
   dispatchLogin: (dados) => dispatch(userLogin(dados)),
 });
 
